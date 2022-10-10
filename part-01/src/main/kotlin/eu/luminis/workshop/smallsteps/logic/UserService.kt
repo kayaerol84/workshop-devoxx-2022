@@ -1,18 +1,34 @@
 package eu.luminis.workshop.smallsteps.logic
 
-import eu.luminis.workshop.smallsteps.persistence.UserDAO
+import eu.luminis.workshop.smallsteps.persistence.UserDAOImpl
 
 // Understands how users can be registered
 class UserService(private val userPersistence: UserDAO) {
     suspend fun registerNewUser(command: NewUserCommand) {
-        require(command.email.isNotBlank()) { "Please enter an email address" }
-        require(command.password.isNotBlank() && command.password.length >= 8) { "Password must be at least 8 characters long" }
-
-        userPersistence.insertUser(command.email, command.password)
+        userPersistence.insertUser(command.email.value, command.password.value)
     }
 }
 
 data class NewUserCommand(
-    val email: String,
-    val password: String,
+    val email: Email,
+    val password: Password,
 )
+
+data class Email(
+    val email: String
+) {
+    val value: String
+    init {
+        require(email.isNotBlank()) { "Please enter an email address" }
+        value = email
+    }
+}
+data class Password(
+    val password: String
+) {
+    val value: String
+    init {
+        require(password.isNotBlank() && password.length >= 8) { "Password must be at least 8 characters long" }
+        value = password
+    }
+}

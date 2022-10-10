@@ -2,7 +2,7 @@ package eu.luminis.workshop.smallsteps
 
 import eu.luminis.workshop.smallsteps.logic.UserService
 import eu.luminis.workshop.smallsteps.persistence.DatabaseFactory
-import eu.luminis.workshop.smallsteps.persistence.UserDAO
+import eu.luminis.workshop.smallsteps.persistence.UserDAOImpl
 
 // Understands how to wire up the various components in the system
 internal class UserAppContext {
@@ -10,7 +10,7 @@ internal class UserAppContext {
         DatabaseFactory.connectAndMigrate()
     }
 
-    private val userDAO = UserDAO()
+    private val userDAO = UserDAOImpl()
 
     val userService = UserService(userDAO)
 }
